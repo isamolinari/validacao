@@ -1,22 +1,44 @@
 // script.js
 
-// Função para validar o login
+/**
+ * Função para validar o login
+ * @param {Event} event - Objeto de evento do formulário
+ */
 function validateLogin(event) {
-    event.preventDefault(); // Impede o envio do formulário
+    event.preventDefault(); 
   
-    // Obtém os valores dos campos
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
     const errorMessage = document.getElementById('error-message');
+    
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value.trim();
   
-    // Verifica se o usuário e a senha correspondem aos valores esperados
-    if (username === 'admin' && password === '123@456') {
-      alert('Login bem-sucedido!');
-      errorMessage.textContent = ''; // Limpa a mensagem de erro
-    } else {
-      errorMessage.textContent = 'Usuário ou senha inválidos!';
+    if (!username || !password) {
+        errorMessage.textContent = 'Por favor, preencha todos os campos!';
+        return;
     }
-  }
   
-  // Adiciona o ouvinte de evento para o envio do formulário
-  document.getElementById('login-form').addEventListener('submit', validateLogin);
+    if (username === 'admin' && password === '123@456') {
+        // Login bem-sucedido
+        errorMessage.textContent = '';
+        
+        alert('Login bem-sucedido! Redirecionando...');
+        
+    } else {
+        errorMessage.textContent = 'Usuário ou senha inválidos!';
+        
+        passwordInput.value = '';
+        passwordInput.focus();
+    }
+}
+  
+document.addEventListener('DOMContentLoaded', function() {
+    const loginForm = document.getElementById('login-form');
+    
+    if (loginForm) {
+        loginForm.addEventListener('submit', validateLogin);
+    } else {
+        console.error('Formulário de login não encontrado!');
+    }
+});
